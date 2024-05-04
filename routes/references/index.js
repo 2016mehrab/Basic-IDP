@@ -8,8 +8,8 @@ router
   .get(async (req, res) => {
     try {
       const references = await ReferenceService.getAll();
-        res.render("reference-list.pug", { references, title: "References" });
-    //   res.status(200).json(references);
+      res.render("reference-list.pug", { references, title: "References" });
+      //   res.status(200).json(references);
     } catch (e) {
       res.render("error", { message: e.message, error: e });
     }
@@ -33,6 +33,25 @@ router.route("/form").get(async (req, res) => {
     res.render("reference-form.pug", { title: "Reference Form" });
   } catch (e) {
     res.render("error", { message: e.message, error: e });
+  }
+});
+
+router.route("/validate").get(async (req, res) => {
+  try {
+    res.render("reference-check.pug", { title: "Validate Reference" });
+  } catch (e) {
+    res.render("error", { message: e.message, error: e });
+  }
+});
+
+router.route("/exists").post(async (req, res) => {
+  try {
+    const exist = await ReferenceService.exists(req.body.refr);
+    if (!exist) throw new Error("Reference doesn't exist!");
+    res.status(201).json({ success: true });
+  } catch (e) {
+    console.error(e);
+    res.status(400).json({ success: false });
   }
 });
 

@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  section
+    header
+      h1= title 
+    form(id="myForm" action="/references/exists" method="POST")
+      fieldset 
+        legend Check Reference
+        div(class="form-group")
+          label(for="refr") Reference:
+          input(id="refr" name="refr" type="text" placeholder="Enter Reference")
+        div(class="form-group")
+          input(type="submit" class="btn btn-primary" value="Submit")
+  script(type='text/javascript', src="/javascripts/validate-toast.js")
