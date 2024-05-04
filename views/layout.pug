@@ -2,6 +2,24 @@ doctype html
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel="stylesheet" href="https://unpkg.com/terminal.css@0.7.4/dist/terminal.min.css")
+    link(rel="stylesheet" href="/stylesheets/custom.css")
   body
-    block content
+    div(class="container ")
+      section 
+        div.terminal-nav
+          div.terminal-logo
+            div.logo.terminal-prompt
+              a.no-style(href="/") home
+          nav.terminal-menu
+            ul
+              li
+                a.menu-item(href="/references") Reference-list
+              li
+                a.menu-item(href="/references/form") Reference-form
+        hr
+      block content
+      div(class="footer-container")
+        hr
+        footer
+          p © 2024 Express App

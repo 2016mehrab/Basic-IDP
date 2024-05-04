@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  section
+    header
+      h1= title 
+    form(id="myForm" action="/references" method="POST")
+      fieldset 
+        legend Database Entry
+        div(class="form-group")
+          label(for="refr") Reference:
+          input(id="refr" name="refr" type="text" placeholder="Enter Reference")
+        div(class="form-group")
+          input(type="submit" class="btn btn-primary" value="Submit")
+  script(type='text/javascript', src="/javascripts/client.js")
