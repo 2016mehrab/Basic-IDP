@@ -45,8 +45,10 @@ router.route("/validate").get(async (req, res) => {
 });
 
 router.route("/exists").post(async (req, res) => {
+    // Do the DID processing in this route
   try {
     const exist = await ReferenceService.exists(req.body.refr);
+
     if (!exist) throw new Error("Reference doesn't exist!");
     res.status(201).json({ success: true });
   } catch (e) {
