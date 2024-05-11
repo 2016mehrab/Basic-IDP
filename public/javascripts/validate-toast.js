@@ -23,6 +23,11 @@ document.getElementById("myForm").addEventListener("submit", function (e) {
       if (data.success) {
         messageDiv.classList.add("terminal-alert-primary");
         messageDiv.innerText = "Reference Exist";
+
+        // Redirect to another page upon successful validation
+        sessionStorage.setItem('did', object.did);
+
+        window.location.href = "/references/addOrg";
       } else {
         messageDiv.classList.add("terminal-alert-error");
         messageDiv.innerText = "Reference Not Found";

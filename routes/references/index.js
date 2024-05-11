@@ -48,12 +48,24 @@ router.route("/exists").post(async (req, res) => {
     // Do the DID processing in this route
   try {
     const exist = await ReferenceService.exists(req.body.refr);
+    //open another route
+    console.log("DID", req.body.did);
+    // res.redirect("/addOrg");
+
 
     if (!exist) throw new Error("Reference doesn't exist!");
     res.status(201).json({ success: true });
   } catch (e) {
     console.error(e);
     res.status(400).json({ success: false });
+  }
+});
+
+router.route("/addOrg").get(async (req, res) => {
+  try {
+    res.render("addOrg.pug");
+  } catch (e) {
+    res.render("error", { message: e.message, error: e });
   }
 });
 
