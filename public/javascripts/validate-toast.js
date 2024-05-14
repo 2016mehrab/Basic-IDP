@@ -22,15 +22,10 @@ document.getElementById("myForm").addEventListener("submit", function (e) {
       messageDiv.classList.add("terminal-alert");
       if (data.success) {
         messageDiv.classList.add("terminal-alert-primary");
-        messageDiv.innerText = "Reference Exist";
-
-        // Redirect to another page upon successful validation
-        sessionStorage.setItem('did', object.did);
-
-        window.location.href = "/references/addOrg";
+        messageDiv.innerText = "Added to Registry";
       } else {
         messageDiv.classList.add("terminal-alert-error");
-        messageDiv.innerText = "Reference Not Found";
+        messageDiv.innerText = "Failed to Add organization";
       }
       messageDiv.style.position = "fixed";
       messageDiv.style.bottom = "0";

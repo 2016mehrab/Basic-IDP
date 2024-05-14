@@ -1,6 +1,8 @@
 const express = require("express");
 const ReferenceService = require("../../services/referenceService");
 const reference = require("../../models/reference");
+const axios = require("axios");
+const fabric_create_endpoint = "http://127.0.0.1:3000/create";
 
 const router = express.Router();
 router
@@ -36,27 +38,38 @@ router.route("/form").get(async (req, res) => {
   }
 });
 
-router.route("/validate").get(async (req, res) => {
+router.route("/add-org").get(async (req, res) => {
   try {
-    res.render("reference-check.pug", { title: "Validate Reference" });
+    res.render("reference-check.pug", { title: "Add To Registry" });
   } catch (e) {
     res.render("error", { message: e.message, error: e });
   }
 });
 
 router.route("/exists").post(async (req, res) => {
-    // Do the DID processing in this route
+  // Do the DID processing in this route
   try {
     const exist = await ReferenceService.exists(req.body.refr);
     //open another route
-    console.log("DID", req.body.did);
-    // res.redirect("/addOrg");
-
-
     if (!exist) throw new Error("Reference doesn't exist!");
+    // add DID resolve checking
+    const constructed_url =process.env.AGENT_CONTROLLER + "/resolve-did?did="+req.body.did;
+    console.log("Constructed url", constructed_url);
+    let response = await axios.get(
+      constructed_url
+    );
+    // adding to registry
+    // let data = {
+    //   did: req.body.did,
+    //   org: req.body.org,
+    //   key: 134,
+    // };
+    // let response = await axios.post(fabric_create_endpoint, data);
+    // if (!response.success)
+    //   throw new Error("Transaction failed for some reason");
     res.status(201).json({ success: true });
   } catch (e) {
-    console.error(e);
+    console.error(e.message);
     res.status(400).json({ success: false });
   }
 });
