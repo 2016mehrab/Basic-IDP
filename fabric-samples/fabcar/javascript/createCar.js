@@ -43,13 +43,18 @@ async function main( params ) {
         // gathering payload data
         console.log(params)
         const key = params.key
-        const orgName = params.orgName
-        const domain = params.domain 
+        // const orgName = params.orgName
+        const orgName = params.org
+        const domain = params.did 
+        // const domain = params.domain 
+        // const did= params.did;
+        // const org = params.org;
 
 
         // Submit the specified transaction.
         // createCar transaction - requires 5 argument, ex: ('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom')
         await contract.submitTransaction('createCar', `${ key }`, `${ orgName }`, `${ domain }`);
+        // await contract.submitTransaction('add_sp',  `${ org }`, `${ did }`);
         console.log('Transaction has been submitted');
 
         // Disconnect from the gateway.

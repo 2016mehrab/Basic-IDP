@@ -2,7 +2,6 @@ const express = require("express");
 const ReferenceService = require("../../services/referenceService");
 const reference = require("../../models/reference");
 const axios = require("axios");
-const fabric_create_endpoint = "http://127.0.0.1:3000/create";
 
 const router = express.Router();
 router
@@ -54,17 +53,16 @@ router.route("/exists").post(async (req, res) => {
     if (!exist) throw new Error("Reference doesn't exist!");
     // add DID resolve checking
     const constructed_url =process.env.AGENT_CONTROLLER + "/resolve-did?did="+req.body.did;
-    console.log("Constructed url", constructed_url);
     let response = await axios.get(
       constructed_url
     );
     // adding to registry
-    // let data = {
-    //   did: req.body.did,
-    //   org: req.body.org,
-    //   key: 134,
-    // };
-    // let response = await axios.post(fabric_create_endpoint, data);
+    let data = {
+      did: req.body.did,
+      org: req.body.org,
+      key: req.body.did,
+    };
+    response = await axios.post(process.env.FABRIC, data);
     // if (!response.success)
     //   throw new Error("Transaction failed for some reason");
     res.status(201).json({ success: true });

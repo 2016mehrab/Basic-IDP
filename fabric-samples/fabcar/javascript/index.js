@@ -56,11 +56,11 @@ app.get('/get-car', function (req, res) {
 app.post('/create', function (req, res) {
     createCar.main( req.body  )
     .then(result => {
-        res.send({message: 'Created successfully'})
+        res.send({success:true})
     })
     .catch(err => {
         console.error({ err })
-        res.send('FAILED TO LOAD DATA!')
+        res.send({success:false})
     })
 })
 
