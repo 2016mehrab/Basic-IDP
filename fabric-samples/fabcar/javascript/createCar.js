@@ -42,10 +42,10 @@ async function main( params ) {
 
         // gathering payload data
         console.log(params)
-        const key = params.key
+        const key = params.did
         // const orgName = params.orgName
         const orgName = params.org
-        const domain = params.did 
+        const domain = params.domain 
         // const domain = params.domain 
         // const did= params.did;
         // const org = params.org;

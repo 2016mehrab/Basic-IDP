@@ -58,9 +58,9 @@ router.route("/exists").post(async (req, res) => {
     );
     // adding to registry
     let data = {
-      did: req.body.did,
+      domain: req.body.domain,
       org: req.body.org,
-      key: req.body.did,
+      did: req.body.did,
     };
     response = await axios.post(process.env.FABRIC, data);
     // if (!response.success)
