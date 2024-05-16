@@ -2,6 +2,7 @@ const express = require("express");
 const ReferenceService = require("../../services/referenceService");
 const reference = require("../../models/reference");
 const axios = require("axios");
+const SP_ACK_URL = "http:localhost:3003/federation-entry-acknowledge";
 
 const router = express.Router();
 router
@@ -46,25 +47,50 @@ router.route("/add-org").get(async (req, res) => {
 });
 
 router.route("/exists").post(async (req, res) => {
-  // Do the DID processing in this route
   try {
     const exist = await ReferenceService.exists(req.body.refr);
-    //open another route
     if (!exist) throw new Error("Reference doesn't exist!");
-    // add DID resolve checking
     const constructed_url =process.env.AGENT_CONTROLLER + "/resolve-did?did="+req.body.did;
     let response = await axios.get(
       constructed_url
     );
-    // adding to registry
+    let data = {
+      refr: req.body.myrefr,
+    };
+    // send acknowledge to the other party
+    response = await axios.post(SP_ACK_URL, data);
+    if (!response.success) throw new Error("Failed to get acknowledgement!");
+    data = {
+      domain: req.body.domain,
+      org: req.body.org,
+      did: req.body.did,
+    };
+
+    response = await axios.post(process.env.FABRIC, data);
+    // if (!response.success)
+    //   throw new Error("Transaction failed for some reason");
+    res.status(201).json({ success: true });
+  } catch (e) {
+    console.error(e.message);
+    res.status(400).json({ success: false });
+  }
+});
+
+router.route("/federation-entry-acknowledgement").post(async (req, res) => {
+  try {
+    const exist = await ReferenceService.exists(req.body.refr);
+    if (!exist) throw new Error("Reference doesn't exist!");
+    // resolving DID
+    const constructed_url =process.env.AGENT_CONTROLLER + "/resolve-did?did="+req.body.did;
+    let response = await axios.get(
+      constructed_url
+    );
     let data = {
       domain: req.body.domain,
       org: req.body.org,
       did: req.body.did,
     };
     response = await axios.post(process.env.FABRIC, data);
-    // if (!response.success)
-    //   throw new Error("Transaction failed for some reason");
     res.status(201).json({ success: true });
   } catch (e) {
     console.error(e.message);
